@@ -6,76 +6,76 @@ import (
 	"os"
 )
 
-type branchRecord struct {
+type BranchRecord struct {
 	cd         int
 	name       string
 	officeCd   int
 	officeName string
 }
 
-type branch struct {
+type Branch struct {
 	cd      int
 	name    string
-	offices []office
+	offices []Office
 }
 
-type office struct {
+type Office struct {
 	officeCd   int
 	officeName string
 }
 
 func main2() {
 
-	tom := branchRecord{
+	record1 := BranchRecord{
 		cd:         1,
 		name:       "name",
 		officeCd:   1,
 		officeName: "officeName",
 	}
 
-	nick := branchRecord{
+	record2 := BranchRecord{
 		cd:         1,
 		name:       "name",
 		officeCd:   2,
 		officeName: "officeName2",
 	}
 
-	branches := []branchRecord{tom, nick}
+	branchRecords := []BranchRecord{record1, record2}
 
-	branchesByCd := map[int][]branchRecord{}
+	branchRecordsByCd := map[int][]BranchRecord{}
 
-	for _, v := range branches {
-		branchesByCd[v.cd] = append(branchesByCd[v.cd], v)
+	for _, v := range branchRecords {
+		branchRecordsByCd[v.cd] = append(branchRecordsByCd[v.cd], v)
 	}
 
-	fmt.Println(branchesByCd)
+	fmt.Println(branchRecordsByCd)
 
-	root := []branch{}
+	var branches []Branch
 
-	for _, values := range branchesByCd {
+	for _, values := range branchRecordsByCd {
 
-		o := []office{}
+		var o []Office
 
 		for _, value := range values {
-			o = append(o, office{
+			o = append(o, Office{
 				officeCd:   value.officeCd,
 				officeName: value.officeName,
 			})
 		}
 
-		b := branch{
+		b := Branch{
 			cd:      values[0].cd,
 			name:    values[0].name,
 			offices: o,
 		}
 
-		root = append(root, b)
+		branches = append(branches, b)
 	}
 
-	a, e := json.Marshal(root)
+	a, e := json.Marshal(branches)
 
 	fmt.Println(e)
-	fmt.Println(root)
+	fmt.Println(branches)
 
 	fmt.Printf("%s\n", a)
 	os.Stdout.Write(a)
